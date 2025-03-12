@@ -1,20 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet } from "react-native";
+import StartGame from "./screens/StartGame";
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+import GameScreen from "./screens/GameScreen";
 
 export default function App() {
+  const [userNumber, setUserNumber] = useState(null);
+
+  const numberPickedHandler = (selectedNumber) => {
+    setUserNumber(selectedNumber);
+    console.log("Number picked: ", selectedNumber);
+  };
+
+  let screen = <StartGame numberInputted={numberPickedHandler} />;
+
+  if (userNumber) {
+    screen = <GameScreen />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <LinearGradient
+      colors={["#72063c", "#ddb52f"]}
+      style={styles.defaultScreenLayout}
+    >
+      <ImageBackground
+        source={require("./assets/images/background.png")}
+        resizeMode="cover"
+        style={styles.defaultScreenLayout}
+        imageStyle={styles.backgroundImage}
+      >
+        {screen}
+      </ImageBackground>
+      <StatusBar style="light" />
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  defaultScreenLayout: { flex: 1 },
+  backgroundImage: { opacity: 0.15 },
 });
